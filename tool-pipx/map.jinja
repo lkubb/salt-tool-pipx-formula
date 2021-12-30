@@ -10,7 +10,7 @@
   {%- endif -%}
 {%- endfor -%}
 
-{%- do salt['defaults.merge'](users, pipx.get('users', {})) -%}
+{%- do salt['defaults.merge'](users, pipx.get('users', {}), merge_lists=True) -%} {#- merge, not replace default packages with user-specific ones -#}
 
 {#- update all user configuration for pipx with its defaults -#}
 {%- do salt['defaults.update'](users, {'pipx': pipx.get('defaults', {})}) -%}

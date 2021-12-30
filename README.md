@@ -2,7 +2,13 @@
 Sets up, configures and updates `pipx`.
 
 ## Usage
-Applying `tool-pipx` will make sure `pipx` is configured as specified.
+Applying `tool-pipx` will make sure `pipx` is configured as specified and requested packages are installed.
+
+### Execution module and state
+This formula provides a custom execution module and state to manage packages installed with pipx. The functions are self-explanatory, please see the source code for comments. Currently, the following states are supported:
+* `pipx.installed(name, user)`
+* `pipx.absent(name, user)`
+* `pipx.uptodate(name, user)`
 
 ## Configuration
 ### Pillar
@@ -49,7 +55,16 @@ user:
   xdg: true                         # force xdg dirs
   persistenv: '.config/zsh/zshenv'  # persist pipx env vars to use xdg dirs permanently (will be appended to file relative to $HOME)
   rchook: '.config/zsh/zshrc'       # load completions during startup. if you're using zsh, make sure to call autoload -U bashcompinit && bashcompinit before that line
+  pipx:
+    packages:                       # packages to install with pipx for this user (convenience)
+      - pipenv
 ```
 
 #### Formula-specific
-There are none currently.
+```yaml
+tool:
+  pipx:
+    defaults:                       # default packages for all users
+      packages:
+        - poetry
+```

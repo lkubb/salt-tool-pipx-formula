@@ -5,7 +5,13 @@ tool:
       xdg: true                         # force xdg dirs
       persistenv: '.config/zsh/zshenv'  # persist pipx env vars to use xdg dirs permanently (will be appended to file relative to $HOME)
       rchook: '.config/zsh/zshrc'       # load completions during startup. if you're using zsh, make sure to call autoload -U bashcompinit && bashcompinit before that line
+      pipx:
+        packages:                       # packages to install with pipx for this user (convenience)
+          - pipenv
   pipx:                                 # package defaults
     users:
       user:                             # user configuration can also be setup in tool:pipx:users
         persistenv: '.bash_profile'
+    defaults:                           # default packages for all users
+      packages:
+        - poetry

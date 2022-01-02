@@ -1,6 +1,6 @@
 {%- from 'tool-pipx/map.jinja' import pipx %}
 
-{%- if pipx.users | selectattr('dotconfig') %}
+{%- if pipx.users | selectattr('dotconfig', 'defined') | selectattr('dotconfig') %}
 include:
   - .configsync
 {%- endif %}

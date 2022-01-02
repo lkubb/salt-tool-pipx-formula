@@ -1,6 +1,6 @@
 {%- from 'tool-pipx/map.jinja' import pipx %}
 
-{%- for user in pipx.users | selectattr('rchook') %}
+{%- for user in pipx.users | selectattr('rchook', 'defined') %}
 pipx completions are loaded on shell startup for user '{{ user.name }}':
   file.append:
     - name: {{ user.home }}/{{ user.rchook }}

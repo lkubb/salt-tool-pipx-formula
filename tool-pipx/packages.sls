@@ -3,7 +3,7 @@
 include:
   - .package
 
-{%- for user in pipx.users | selectattr('pipx.packages') %}
+{%- for user in pipx.users | selectattr('pipx.packages', 'defined') %}
   {%- for package in user.pipx.packages %}
 pipx package '{{ package }}' is installed for user '{{ user.name }}':
   pipx.installed:

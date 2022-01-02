@@ -40,8 +40,11 @@ def installed(name, user=None):
     try:
         if __salt__["pipx.is_installed"](name, user):
             ret["comment"] = "Program is already installed with pipx."
-            return ret
-        if __salt__["pipx.install"](name, user):
+        elif __opts__['test']:
+            ret['result'] = None
+            ret['comment'] = "Program '{}' would have been installed for user '{}'.".format(name, user)
+            ret["changes"] = {'installed': name}
+        elif __salt__["pipx.install"](name, user):
             ret["comment"] = "Program '{}' was installed for user '{}'.".format(name, user)
             ret["changes"] = {'installed': name}
         else:
@@ -74,9 +77,21 @@ def uptodate(name, user=None):
     ret = {"name": name, "result": True, "comment": "", "changes": {}}
 
     try:
-        if __salt__["pipx.is_installed"](name, user) and __salt__["pipx.upgrade"](name, user):
-            ret["comment"] = "Program '{}' was upgraded for user '{}'.".format(name, user)
-            ret["changes"] = {'upgraded': name}
+        if __salt__["pipx.is_installed"](name, user):
+            if __opts__['test']:
+                ret['result'] = None
+                ret['comment'] = "App '{}' would have been upgraded for user '{}'.".format(name, user)
+                ret["changes"] = {'installed': name}
+            elif __salt__["pipx.upgrade"](name, user):
+                ret["comment"] = "Program '{}' was upgraded for user '{}'.".format(name, user)
+                ret["changes"] = {'upgraded': name}
+            else:
+                ret["result"] = False
+                ret["comment"] = "Something went wrong while calling mas."
+        elif __opts__['test']:
+            ret['result'] = None
+            ret['comment'] = "Program '{}' would have been installed for user '{}'.".format(name, user)
+            ret["changes"] = {'installed': name}
         elif __salt__["pipx.install"](name, user):
             ret["comment"] = "Program '{}' was installed for user '{}'.".format(name, user)
             ret["changes"] = {'installed': name}
@@ -114,8 +129,11 @@ def absent(name, user=None):
     try:
         if not __salt__["pipx.is_installed"](name, user):
             ret["comment"] = "Program is already absent from pipx."
-            return ret
-        if __salt__["pipx.remove"](name, user):
+        elif __opts__['test']:
+            ret['result'] = None
+            ret['comment'] = "Program '{}' would have been removed for user '{}'.".format(name, user)
+            ret["changes"] = {'installed': name}
+        elif __salt__["pipx.remove"](name, user):
             ret["comment"] = "Program '{}' was removed for user '{}'.".format(name, user)
             ret["changes"] = {'installed': name}
         else:

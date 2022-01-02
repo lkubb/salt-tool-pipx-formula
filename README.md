@@ -51,7 +51,6 @@ tool:
 The following shows an example of `tool-pipx` pillar configuration. Namespace it to `tool:users` and/or `tool:pipx:users`.
 ```yaml
 user:
-  name: user                        # username to install asdf plugins/tool versions for
   xdg: true                         # force xdg dirs
   persistenv: '.config/zsh/zshenv'  # persist pipx env vars to use xdg dirs permanently (will be appended to file relative to $HOME)
   rchook: '.config/zsh/zshrc'       # load completions during startup. if you're using zsh, make sure to call autoload -U bashcompinit && bashcompinit before that line

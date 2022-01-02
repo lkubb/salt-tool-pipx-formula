@@ -8,3 +8,6 @@ include:
 {%- if pipx.users | selectattr('rchook') %}
   - .completions
 {%- endif %}
+{%- if pipx.users | selectattr('pipx.packages') %}
+  - .packages
+{%- endif %}

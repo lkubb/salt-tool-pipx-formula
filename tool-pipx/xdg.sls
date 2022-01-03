@@ -10,7 +10,7 @@ pipx data is migrated to XDG_DATA_HOME for user '{{ user.name }}':
 pipx uses XDG dirs during this salt run:
   environ.setenv:
     - value:
-        PIPX_HOME: "${XDG_DATA_HOME:-$HOME/.local/share}/pipx"
+        PIPX_HOME: "{{ user.xdg.data }}/pipx"
 
   {%- if user.get('persistenv') %}
 pipx knows about XDG location for user '{{ user.name }}':

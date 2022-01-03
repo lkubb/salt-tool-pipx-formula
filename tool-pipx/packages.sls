@@ -9,5 +9,5 @@ pipx package '{{ package }}' is installed for user '{{ user.name }}':
   pipx.installed:
     - name: {{ package }}
     - user: {{ user.name }}
-  {%- endif %}
+  {%- endfor %}
 {%- endfor %}

@@ -12,5 +12,4 @@ pipx completions are loaded on shell startup for user '{{ user.name }}':
     - user: {{ user.name }}
     - group: {{ user.group }}
     - mode: '0600'
-  {%- endif %}
 {%- endfor %}

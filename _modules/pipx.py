@@ -28,37 +28,37 @@ def is_installed(name, user=None):
 def install(name, user=None):
     e = _which(user)
 
-    return __salt__['cmd.retcode']("{} install '{}'".format(e, name), runas=user)
+    return not __salt__['cmd.retcode']("{} install '{}'".format(e, name), runas=user)
 
 
 def remove(name, user=None):
     e = _which(user)
 
-    return __salt__['cmd.retcode']("{} uninstall '{}'".format(e, name), runas=user)
+    return not __salt__['cmd.retcode']("{} uninstall '{}'".format(e, name), runas=user)
 
 
 def remove_all(user=None):
     e = _which(user)
 
-    return __salt__['cmd.retcode']("{} uninstall-all".format(e), runas=user)
+    return not __salt__['cmd.retcode']("{} uninstall-all".format(e), runas=user)
 
 
 def upgrade(name, user=None):
     e = _which(user)
 
-    return __salt__['cmd.retcode']("{} upgrade '{}'".format(e, name), runas=user)
+    return not __salt__['cmd.retcode']("{} upgrade '{}'".format(e, name), runas=user)
 
 
 def reinstall(name, user=None):
     e = _which(user)
 
-    return __salt__['cmd.retcode']("{} reinstall '{}'".format(e, name), runas=user)
+    return not __salt__['cmd.retcode']("{} reinstall '{}'".format(e, name), runas=user)
 
 
 def upgrade_all(user=None):
     e = _which(user)
 
-    return __salt__['cmd.retcode']("{} upgrade-all".format(e), runas=user)
+    return not __salt__['cmd.retcode']("{} upgrade-all".format(e), runas=user)
 
 
 def _list_installed(user=None):

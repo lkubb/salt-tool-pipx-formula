@@ -57,7 +57,7 @@ def installed(name, user=None):
     return ret
 
 
-def uptodate(name, user=None):
+def latest(name, user=None):
     """
     Make sure program is installed with pipx and is up to date.
 
@@ -65,7 +65,7 @@ def uptodate(name, user=None):
 
     .. code-block:: bash
 
-        salt '*' pipx.uptodate poetry user=user
+        salt '*' pipx.latest poetry user=user
 
     name
         The name of the program to upgrade or install.

@@ -8,7 +8,7 @@ Applying `tool-pipx` will make sure `pipx` is configured as specified and reques
 This formula provides a custom execution module and state to manage packages installed with pipx. The functions are self-explanatory, please see the source code for comments. Currently, the following states are supported:
 * `pipx.installed(name, user)`
 * `pipx.absent(name, user)`
-* `pipx.uptodate(name, user)`
+* `pipx.latest(name, user)`
 
 ## Configuration
 ### Pillar

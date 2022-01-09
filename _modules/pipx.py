@@ -1,10 +1,7 @@
 from salt.exceptions import CommandExecutionError
-# import logging
+import salt.utils.platform
 import json
 
-import salt.utils.platform
-
-# log = logging.getLogger(__name__)
 __virtualname__ = "pipx"
 
 
@@ -13,10 +10,10 @@ def __virtual__():
 
 
 def _which(user=None):
-    if e := salt["cmd.run"]("command -v pipx", runas=user):
+    if e := __salt__["cmd.run"]("command -v pipx", runas=user):
         return e
     if salt.utils.platform.is_darwin():
-        if p := salt["cmd.run"]("brew --prefix pipx", runas=user):
+        if p := __salt__["cmd.run"]("brew --prefix pipx", runas=user):
             return p
     raise CommandExecutionError("Could not find pipx executable.")
 
@@ -63,7 +60,7 @@ def upgrade_all(user=None):
 
 def _list_installed(user=None):
     e = _which(user)
-    out = json.loads(__salt__['cmd.run']('{} list --json'.format(e), runas=user, raise_err=True))
+    out = json.loads(__salt__['cmd.run_stdout']('{} list --json'.format(e), runas=user, raise_err=True))
     if out:
         return list(out['venvs'].keys())
     raise CommandExecutionError('Something went wrong while calling pipx.')

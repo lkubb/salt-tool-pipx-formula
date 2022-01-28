@@ -10,10 +10,14 @@ def __virtual__():
 
 
 def _which(user=None):
-    if e := __salt__["cmd.run"]("command -v pipx", runas=user):
+    e = __salt__["cmd.run"]("command -v pipx", runas=user)
+    # if e := __salt__["cmd.run"]("command -v pipx", runas=user):
+    if e:
         return e
     if salt.utils.platform.is_darwin():
-        if p := __salt__["cmd.run"]("brew --prefix pipx", runas=user):
+        p = __salt__["cmd.run"]("brew --prefix pipx", runas=user)
+        # if p := __salt__["cmd.run"]("brew --prefix pipx", runas=user):
+        if p:
             return p
     raise CommandExecutionError("Could not find pipx executable.")
 

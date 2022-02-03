@@ -20,13 +20,22 @@ pipx uses XDG dirs during this salt run:
       - Pipx setup is completed
 
   {%- if user.get('persistenv') %}
+
+persistenv file for pipx for user '{{ user.name }}' exists:
+  file.managed:
+    - name: {{ user.home }}/{{ user.persistenv }}
+    - user: {{ user.name }}
+    - group: {{ user.group }}
+    - mode: '0600'
+    - dir_mode: '0700'
+    - makedirs: true
+
 pipx knows about XDG location for user '{{ user.name }}':
   file.append:
     - name: {{ user.home }}/{{ user.persistenv }}
     - text: export PIPX_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/pipx"
-    - user: {{ user.name }}
-    - group: {{ user.group }}
-    - mode: '0600'
+    - require:
+      - persistenv file for pipx for user '{{ user.name }}' exists
     - prereq_in:
       - Pipx setup is completed
   {%- endif %}

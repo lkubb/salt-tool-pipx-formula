@@ -9,14 +9,14 @@ pipx data is migrated to XDG_DATA_HOME for user '{{ user.name }}':
     - name: {{ user.xdg.data }}/pipx
     - source: {{ user.home }}/local/pipx
     - makedirs: true
-    - prereq_in:
+    - require_in:
       - Pipx setup is completed
 
 pipx uses XDG dirs during this salt run:
   environ.setenv:
     - value:
         PIPX_HOME: "{{ user.xdg.data }}/pipx"
-    - prereq_in:
+    - require_in:
       - Pipx setup is completed
 
   {%- if user.get('persistenv') %}
@@ -36,7 +36,7 @@ pipx knows about XDG location for user '{{ user.name }}':
     - text: export PIPX_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/pipx"
     - require:
       - persistenv file for pipx for user '{{ user.name }}' exists
-    - prereq_in:
+    - require_in:
       - Pipx setup is completed
   {%- endif %}
 {%- endfor %}

@@ -7,6 +7,7 @@ rchook file for pipx exists for user '{{ user.name }}':
     - name: {{ user.home }}/{{ user.rchook }}
     - user: {{ user.name }}
     - group: {{ user.group }}
+    - replace: false
     - mode: '0600'
     - dir_mode: '0700'
     - makedirs: true

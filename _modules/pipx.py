@@ -1,6 +1,10 @@
 from salt.exceptions import CommandExecutionError
 import salt.utils.platform
 import json
+from pkg_resources import packaging
+import logging
+
+log = logging.getLogger(__name__)
 
 __virtualname__ = "pipx"
 
@@ -62,9 +66,42 @@ def upgrade_all(user=None):
     return not __salt__['cmd.retcode']("{} upgrade-all".format(e), runas=user)
 
 
-def _list_installed(user=None):
+def is_outdated(name, user=None, endpoint='https://pypi.org/pypi/{}/json'):
+    current_all = _list_installed(user, versions=True)
+    current = current_all.get(name)
+
+    if current is None:
+        raise CommandExecutionError("{} is not installed for user {}.".format(name, user))
+
+    latest = _get_latest_version(name, endpoint)
+
+    return packaging.version.parse(current) < packaging.version.parse(latest)
+
+
+def _get_latest_version(name, endpoint='https://pypi.org/pypi/{}/json'):
+    # for simplicity, this uses the pypi json endpoint,
+    # not the simple API (ironically) because it's html
+    # the latter would be preferred for compatibility reasons
+    api_url = endpoint.format(name)
+    log.info('Looking up version for {} at {}'.format(name, api_url))
+    response = __salt__['http.query'](api_url, decode=True, decode_type='json')
+    log.debug('Parsed response:\n\n{}'.format(response['dict']))
+    return response['dict']['info']['version']
+
+
+def _list_installed(user=None, versions=False):
     e = _which(user)
-    out = json.loads(__salt__['cmd.run_stdout']('{} list --json'.format(e), runas=user, raise_err=True))
-    if out:
-        return list(out['venvs'].keys())
-    raise CommandExecutionError('Something went wrong while calling pipx.')
+    try:
+        out = json.loads(__salt__['cmd.run_stdout']('{} list --json'.format(e), runas=user, raise_err=True))
+    except json.JSONDecodeError as e:
+        raise CommandExecutionError(str(e))
+
+    tools = list(out['venvs'].keys())
+
+    if versions:
+        versions = []
+        for tool in tools:
+            versions.append(out['venvs'][tool]['metadata']['main_package']['package_version'])
+        return dict(zip(tools, versions))
+
+    return tools

@@ -1,7 +1,8 @@
 """
-Managing python programs with pipx
+pipx salt state module
 ======================================================
 
+Manage python executable packages with pipx.
 """
 
 # import logging
@@ -22,12 +23,6 @@ def installed(name, user=None):
     """
     Make sure program is installed with pipx.
 
-    CLI Example:
-
-    .. code-block:: bash
-
-        salt '*' pipx.installed poetry user=user
-
     name
         The name of the program to install, if not installed already.
 
@@ -40,13 +35,19 @@ def installed(name, user=None):
     try:
         if __salt__["pipx.is_installed"](name, user):
             ret["comment"] = "Package is already installed with pipx."
-        elif __opts__['test']:
-            ret['result'] = None
-            ret['comment'] = "Package '{}' would have been installed for user '{}'.".format(name, user)
-            ret["changes"] = {'installed': name}
+        elif __opts__["test"]:
+            ret["result"] = None
+            ret[
+                "comment"
+            ] = "Package '{}' would have been installed for user '{}'.".format(
+                name, user
+            )
+            ret["changes"] = {"installed": name}
         elif __salt__["pipx.install"](name, user):
-            ret["comment"] = "Package '{}' was installed for user '{}'.".format(name, user)
-            ret["changes"] = {'installed': name}
+            ret["comment"] = "Package '{}' was installed for user '{}'.".format(
+                name, user
+            )
+            ret["changes"] = {"installed": name}
         else:
             ret["result"] = False
             ret["comment"] = "Something went wrong while calling pipx."
@@ -61,12 +62,6 @@ def latest(name, user=None):
     """
     Make sure program is installed with pipx and is up to date.
 
-    CLI Example:
-
-    .. code-block:: bash
-
-        salt '*' pipx.latest poetry user=user
-
     name
         The name of the program to upgrade or install.
 
@@ -78,15 +73,25 @@ def latest(name, user=None):
 
     try:
         if __salt__["pipx.is_installed"](name, user):
-            if not __salt__['pipx.is_outdated'](name, user):
-                ret['comment'] = "Package '{}' is already at the latest version for user '{}'.".format(name, user)
-            elif __opts__['test']:
-                ret['result'] = None
-                ret['comment'] = "Package '{}' would have been upgraded for user '{}'.".format(name, user)
-                ret["changes"] = {'installed': name}
+            if not __salt__["pipx.is_outdated"](name, user):
+                ret[
+                    "comment"
+                ] = "Package '{}' is already at the latest version for user '{}'.".format(
+                    name, user
+                )
+            elif __opts__["test"]:
+                ret["result"] = None
+                ret[
+                    "comment"
+                ] = "Package '{}' would have been upgraded for user '{}'.".format(
+                    name, user
+                )
+                ret["changes"] = {"installed": name}
             elif __salt__["pipx.upgrade"](name, user):
-                ret["comment"] = "Package '{}' was upgraded for user '{}'.".format(name, user)
-                ret["changes"] = {'upgraded': name}
+                ret["comment"] = "Package '{}' was upgraded for user '{}'.".format(
+                    name, user
+                )
+                ret["changes"] = {"upgraded": name}
             else:
                 ret["result"] = False
                 ret["comment"] = "Something went wrong while calling pipx."
@@ -104,12 +109,6 @@ def absent(name, user=None):
     """
     Make sure pipx installation of program is removed.
 
-    CLI Example:
-
-    .. code-block:: bash
-
-        salt '*' pipx.absent poetry
-
     name
         The name of the program to remove, if installed.
 
@@ -122,13 +121,17 @@ def absent(name, user=None):
     try:
         if not __salt__["pipx.is_installed"](name, user):
             ret["comment"] = "Package is already absent from pipx."
-        elif __opts__['test']:
-            ret['result'] = None
-            ret['comment'] = "Package '{}' would have been removed for user '{}'.".format(name, user)
-            ret["changes"] = {'installed': name}
+        elif __opts__["test"]:
+            ret["result"] = None
+            ret[
+                "comment"
+            ] = "Package '{}' would have been removed for user '{}'.".format(name, user)
+            ret["changes"] = {"installed": name}
         elif __salt__["pipx.remove"](name, user):
-            ret["comment"] = "Package '{}' was removed for user '{}'.".format(name, user)
-            ret["changes"] = {'installed': name}
+            ret["comment"] = "Package '{}' was removed for user '{}'.".format(
+                name, user
+            )
+            ret["changes"] = {"installed": name}
         else:
             ret["result"] = False
             ret["comment"] = "Something went wrong while calling pipx."

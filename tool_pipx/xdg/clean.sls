@@ -6,7 +6,7 @@
 {%- from tplroot ~ "/map.jinja" import mapdata as pipx with context %}
 
 
-{%- for user in pipx.users | rejectattr('xdg', 'sameas', False) %}
+{%- for user in pipx.users | rejectattr('xdg', 'sameas', false) %}
 
 {%-   set user_default_conf = user.home | path_join(pipx.lookup.paths.confdir) %}
 {%-   set user_xdg_confdir = user.xdg.config | path_join(pipx.lookup.paths.xdg_dirname) %}

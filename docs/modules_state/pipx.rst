@@ -1,7 +1,7 @@
 .. _sm_pipx:
 
-pipx state module
-=================
+``pipx`` state module
+=====================
 
 .. automodule:: _states.pipx
    :members:

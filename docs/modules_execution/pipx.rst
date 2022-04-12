@@ -1,7 +1,7 @@
 .. _em_pipx:
 
-pipx execution module
-=====================
+``pipx`` execution module
+=========================
 
 .. automodule:: _modules.pipx
    :members:

@@ -13,5 +13,6 @@
 ---
 values:
   lookup:
-    pkg_manager: chocolatey
+    pkg:
+      manager: chocolatey
 ...

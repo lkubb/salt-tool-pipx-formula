@@ -5,6 +5,7 @@
 {%- set tplroot = tpldir.split('/')[0] %}
 {%- from tplroot ~ "/map.jinja" import mapdata as pipx with context %}
 
+
 Pipx is installed:
   pkg.installed:
     - name: {{ pipx.lookup.pkg.name }}

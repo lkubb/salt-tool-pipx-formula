@@ -50,7 +50,6 @@ def is_installed(name, user=None):
 
     user
         The username to check for. Defaults to salt user.
-
     """
 
     return name in _list_installed(user)
@@ -71,7 +70,6 @@ def install(name, user=None):
 
     user
         The username to install the package for. Defaults to salt user.
-
     """
 
     e = _which(user)
@@ -94,7 +92,6 @@ def remove(name, user=None):
 
     user
         The username to remove the package for. Defaults to salt user.
-
     """
 
     e = _which(user)
@@ -114,7 +111,6 @@ def remove_all(user=None):
 
     user
         The username to remove all packages for. Defaults to salt user.
-
     """
 
     e = _which(user)
@@ -137,7 +133,6 @@ def upgrade(name, user=None):
 
     user
         The username to upgrade the package for. Defaults to salt user.
-
     """
 
     e = _which(user)
@@ -160,7 +155,6 @@ def reinstall(name, user=None):
 
     user
         The username to reinstall the package for. Defaults to salt user.
-
     """
 
     e = _which(user)
@@ -180,7 +174,6 @@ def upgrade_all(user=None):
 
     user
         The username to upgrade all packages for. Defaults to salt user.
-
     """
 
     e = _which(user)

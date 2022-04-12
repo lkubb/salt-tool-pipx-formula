@@ -4,6 +4,7 @@
 tool_global:
   users:
     user:
+      completions: .completions
       configsync: true
       persistenv: .bash_profile
       rchook: .bashrc

@@ -9,18 +9,18 @@ include:
   - {{ tplroot }}.package
 
 
-{%- for user in pipx.users | rejectattr('xdg', 'sameas', False) %}
+{%- for user in pipx.users | rejectattr('xdg', 'sameas', false) %}
 
 {%-   set user_default_data = user.home | path_join(pipx.lookup.paths.confdir) %}
 {%-   set user_xdg_datadir = user.xdg.data | path_join(pipx.lookup.paths.xdg_dirname) %}
 
 # workaround for file.rename not supporting user/group/mode for makedirs
-XDG_DATA_HOME exists for user '{{ user.name }}':
+XDG_DATA_HOME exists for Pipx for user '{{ user.name }}':
   file.directory:
     - name: {{ user.xdg.data }}
     - user: {{ user.name }}
     - group: {{ user.group }}
-    - mode: '0700'
+    - mode: '0755'
     - makedirs: true
     - onlyif:
       - test -e '{{ user_default_data }}'
@@ -30,7 +30,7 @@ Existing Pipx data is migrated for user '{{ user.name }}':
     - name: {{ user_xdg_datadir }}
     - source: {{ user_default_data }}
     - require:
-      - XDG_DATA_HOME exists for user '{{ user.name }}'
+      - XDG_DATA_HOME exists for Pipx for user '{{ user.name }}'
     - require_in:
       - Pipx setup is completed
 
@@ -40,7 +40,7 @@ Pipx has its data dir in XDG_DATA_HOME for user '{{ user.name }}':
     - user: {{ user.name }}
     - group: {{ user.group }}
     - makedirs: true
-    - mode: '0700'
+    - mode: '0755'
     - require:
       - Existing Pipx data is migrated for user '{{ user.name }}'
     - require_in:

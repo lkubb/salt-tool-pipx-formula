@@ -28,8 +28,8 @@ def installed(name, user=None):
 
     user
         The username to install the program for. Defaults to salt user.
-
     """
+
     ret = {"name": name, "result": True, "comment": "", "changes": {}}
 
     try:
@@ -67,8 +67,8 @@ def latest(name, user=None):
 
     user
         The username to install the program for. Defaults to salt user.
-
     """
+
     ret = {"name": name, "result": True, "comment": "", "changes": {}}
 
     try:
@@ -114,8 +114,8 @@ def absent(name, user=None):
 
     user
         The username to remove the program for. Defaults to salt user.
-
     """
+
     ret = {"name": name, "result": True, "comment": "", "changes": {}}
 
     try:
@@ -126,12 +126,12 @@ def absent(name, user=None):
             ret[
                 "comment"
             ] = "Package '{}' would have been removed for user '{}'.".format(name, user)
-            ret["changes"] = {"installed": name}
+            ret["changes"] = {"removed": name}
         elif __salt__["pipx.remove"](name, user):
             ret["comment"] = "Package '{}' was removed for user '{}'.".format(
                 name, user
             )
-            ret["changes"] = {"installed": name}
+            ret["changes"] = {"removed": name}
         else:
             ret["result"] = False
             ret["comment"] = "Something went wrong while calling pipx."

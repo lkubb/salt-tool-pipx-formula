@@ -9,6 +9,7 @@
 include:
   - {{ sls_config_clean }}
 
+
 Pipx is removed:
   pkg.removed:
     - name: {{ pipx.lookup.pkg.name }}

@@ -34,8 +34,11 @@ The following shows an example of ``tool_pipx`` per-user configuration. If provi
 
   user:
 
-        # Force the usage of XDG directories for this user.
-      xdg: true
+      # Force the usage of XDG directories for this user.
+    xdg: true
+
+      # Put shell completions into this directory, relative to user home.
+    completions: '.config/zsh/completions'
 
       # Persist environment variables used by this formula for this
       # user to this file (will be appended to a file relative to $HOME)

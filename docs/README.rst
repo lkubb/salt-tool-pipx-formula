@@ -16,6 +16,10 @@ Execution and state module
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 This formula provides a custom execution module and state to manage packages installed with Pipx. The functions are self-explanatory, please see the source code or the rendered docs at :ref:`em_pipx` and :ref:`sm_pipx`.
 
+Common problems
+---------------
+* Especially on MacOS + Homebrew, after brew upgraded its Python, `all installed packages will be broken <https://github.com/pypa/pipx/issues/146>`_. A workaround is to issue ``pipx reinstall-all``. It might make sense to depend on a different, more stable ``python``, e.g. ``pipx reinstall-all --python /usr/bin/python3``.
+
 Configuration
 -------------
 

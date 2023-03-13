@@ -9,15 +9,21 @@
 include:
   - {{ sls_config_clean }}
 
-
-Pipx is removed:
 {%- if install_method == "asdf" %}
+{%-   for user in pipx.users %}
+
+Pipx is removed for user '{{ user.name }}':
   pip.removed:
     - name: {{ pipx.lookup.pkg.name }}
     - bin_env: {{ salt["cmd.run_stdout"]("asdf which pip") }}
-{%- else %}
-  pkg.removed:
-    - name: {{ pipx.lookup.pkg.name }}
-{%- endif %}
     - require:
       - sls: {{ sls_config_clean }}
+{%-   endfor %}
+{%- else %}
+
+Pipx is removed:
+  pkg.removed:
+    - name: {{ pipx.lookup.pkg.name }}
+    - require:
+      - sls: {{ sls_config_clean }}
+{%- endif %}

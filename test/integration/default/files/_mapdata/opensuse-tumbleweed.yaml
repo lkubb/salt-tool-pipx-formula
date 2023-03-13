@@ -2,6 +2,7 @@
 # openSUSE Tumbleweed-yyyymmdd
 ---
 values:
+  install_method: pkg
   users:
     user:
       completions: .completions

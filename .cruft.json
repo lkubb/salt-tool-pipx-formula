@@ -38,7 +38,9 @@
       "has_tests": "y",
       "git_username": "lkubb",
       "lookup": {},
-      "settings": {},
+      "settings": {
+        "install_method": "pkg"
+      },
       "usersettings": {
         "packages": [
           "cookiecutter",

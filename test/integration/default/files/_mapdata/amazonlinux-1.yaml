@@ -2,6 +2,7 @@
 # Amazon Linux AMI-2018
 ---
 values:
+  install_method: pkg
   users:
     user:
       completions: .completions

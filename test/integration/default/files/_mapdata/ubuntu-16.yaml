@@ -2,6 +2,7 @@
 # Ubuntu-16.04
 ---
 values:
+  install_method: pkg
   users:
     user:
       completions: .completions

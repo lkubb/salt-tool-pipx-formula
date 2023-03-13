@@ -29,6 +29,7 @@ tool_pipx:
       xdg_dirname: 'pipx'
       xdg_conffile: 'config'
     rootgroup: root
+  install_method: pkg
 
   tofs:
     # The files_switch key serves as a selector for alternative

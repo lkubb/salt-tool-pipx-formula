@@ -74,6 +74,7 @@ Formula-specific
       # by leaving version empty or setting it to 'latest'
       # (again for Linux, brew does that anyways).
     version: latest
+    install_method: pkg
 
       # Default formula configuration for all users.
     defaults:

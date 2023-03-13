@@ -2,6 +2,7 @@
 # Fedora-35
 ---
 values:
+  install_method: pkg
   users:
     user:
       completions: .completions

@@ -2,6 +2,7 @@
 # Oracle Linux Server-8
 ---
 values:
+  install_method: pkg
   users:
     user:
       completions: .completions

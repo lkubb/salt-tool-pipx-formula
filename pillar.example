@@ -57,6 +57,10 @@ tool_pipx:
     # (again for Linux, brew does that anyways).
   version: latest
 
+    # `asdf` or `pkg`
+    # asdf will include tool_asdf and use the default system python's pip
+  install_method: pkg
+
     # Default formula configuration for all users.
   defaults:
     packages: default value for all users

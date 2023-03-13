@@ -1,6 +1,6 @@
 {
   "template": "https://github.com/lkubb/salt-tool-template-formula",
-  "commit": "8eb784d74343e8fe8ef8a6c66dc50e5f0456981f",
+  "commit": "e9d3e0471ce648595d77be7744fdfe1ea3a6b036",
   "checkout": null,
   "context": {
     "cookiecutter": {
@@ -37,9 +37,9 @@
       "has_completions": "y",
       "has_tests": "y",
       "git_username": "lkubb",
-      "_lookup": {},
-      "_settings": {},
-      "_usersettings": {
+      "lookup": {},
+      "settings": {},
+      "usersettings": {
         "packages": [
           "cookiecutter",
           "cruft",

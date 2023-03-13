@@ -28,6 +28,7 @@ tool_pipx:
       conffile: 'config'
       xdg_dirname: 'pipx'
       xdg_conffile: 'config'
+    rootgroup: root
 
   tofs:
     # The files_switch key serves as a selector for alternative

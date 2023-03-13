@@ -8,7 +8,7 @@ include:
   - {{ tplroot }}.package
 
 
-{%- for user in pipx.users | selectattr('rchook', 'defined') %}
+{%- for user in pipx.users | selectattr('rchook', 'defined') | selectattr('rchook') %}
 
 Pipx completions are loaded on shell startup for user '{{ user.name }}':
   file.replace:

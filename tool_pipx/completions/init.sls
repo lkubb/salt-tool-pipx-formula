@@ -15,7 +15,7 @@ include:
   - {{ tplroot }}.package
 
 
-{%- for user in pipx.users | selectattr('rchook', 'defined') %}
+{%- for user in pipx.users | selectattr('rchook', 'defined') | selectattr('rchook') %}
 
 rchook file for Pipx exists for user '{{ user.name }}':
   file.managed:

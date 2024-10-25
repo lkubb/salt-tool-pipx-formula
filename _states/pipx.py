@@ -39,14 +39,10 @@ def installed(name, user=None):
             ret["result"] = None
             ret[
                 "comment"
-            ] = "Package '{}' would have been installed for user '{}'.".format(
-                name, user
-            )
+            ] = f"Package '{name}' would have been installed for user '{user}'."
             ret["changes"] = {"installed": name}
         elif __salt__["pipx.install"](name, user):
-            ret["comment"] = "Package '{}' was installed for user '{}'.".format(
-                name, user
-            )
+            ret["comment"] = f"Package '{name}' was installed for user '{user}'."
             ret["changes"] = {"installed": name}
         else:
             ret["result"] = False
@@ -72,31 +68,29 @@ def latest(name, user=None):
     ret = {"name": name, "result": True, "comment": "", "changes": {}}
 
     try:
-        if __salt__["pipx.is_installed"](name, user):
-            if not __salt__["pipx.is_outdated"](name, user):
-                ret[
-                    "comment"
-                ] = "Package '{}' is already at the latest version for user '{}'.".format(
-                    name, user
-                )
-            elif __opts__["test"]:
-                ret["result"] = None
-                ret[
-                    "comment"
-                ] = "Package '{}' would have been upgraded for user '{}'.".format(
-                    name, user
-                )
-                ret["changes"] = {"installed": name}
-            elif __salt__["pipx.upgrade"](name, user):
-                ret["comment"] = "Package '{}' was upgraded for user '{}'.".format(
-                    name, user
-                )
-                ret["changes"] = {"upgraded": name}
-            else:
-                ret["result"] = False
-                ret["comment"] = "Something went wrong while calling pipx."
-        else:
+        if not __salt__["pipx.is_installed"](name, user):
             return installed(name, user)
+        outdated, curr, latest = __salt__["pipx.is_outdated"](
+            name, user, get_versions=True
+        )
+        if not outdated:
+            ret[
+                "comment"
+            ] = f"Package '{name}' is already at the latest version for user '{user}'."
+            return ret
+        if __opts__["test"]:
+            ret["result"] = None
+            ret[
+                "comment"
+            ] = f"Package '{name}' would have been upgraded for user '{user}'."
+            ret["changes"] = {"upgraded": {name: {"old": curr, "new": latest}}}
+            return ret
+        if __salt__["pipx.upgrade"](name, user):
+            ret["comment"] = f"Package '{name}' was upgraded for user '{user}'."
+            ret["changes"] = {"upgraded": {name: {"old": curr, "new": latest}}}
+        else:
+            ret["result"] = False
+            ret["comment"] = "Something went wrong while calling pipx."
 
     except salt.exceptions.CommandExecutionError as e:
         ret["result"] = False
@@ -125,12 +119,10 @@ def absent(name, user=None):
             ret["result"] = None
             ret[
                 "comment"
-            ] = "Package '{}' would have been removed for user '{}'.".format(name, user)
+            ] = f"Package '{name}' would have been removed for user '{user}'."
             ret["changes"] = {"removed": name}
         elif __salt__["pipx.remove"](name, user):
-            ret["comment"] = "Package '{}' was removed for user '{}'.".format(
-                name, user
-            )
+            ret["comment"] = f"Package '{name}' was removed for user '{user}'."
             ret["changes"] = {"removed": name}
         else:
             ret["result"] = False

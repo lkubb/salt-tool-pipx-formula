@@ -8,9 +8,8 @@ Manage python executable packages with pipx.
 import json
 import logging
 
-from pkg_resources import packaging
-
 import salt.utils.platform
+from pkg_resources import packaging
 from salt.exceptions import CommandExecutionError
 
 log = logging.getLogger(__name__)
@@ -23,15 +22,11 @@ def __virtual__():
 
 
 def _which(user=None):
-    e = __salt__["cmd.run_stdout"]("command -v pipx", runas=user)
-    # if e := __salt__["cmd.run_stdout"]("command -v pipx", runas=user):
-    if e:
-        return e
+    if exe := __salt__["cmd.run_stdout"]("command -v pipx", runas=user):
+        return exe
     if salt.utils.platform.is_darwin():
-        p = __salt__["cmd.run_stdout"]("brew --prefix pipx", runas=user)
-        # if p := __salt__["cmd.run_stdout"]("brew --prefix pipx", runas=user):
-        if p:
-            return p
+        if exe := __salt__["cmd.run_stdout"]("brew --prefix pipx", runas=user):
+            return exe
     raise CommandExecutionError("Could not find pipx executable.")
 
 
@@ -71,10 +66,7 @@ def install(name, user=None):
     user
         The username to install the package for. Defaults to salt user.
     """
-
-    e = _which(user)
-
-    return not __salt__["cmd.retcode"]("{} install '{}'".format(e, name), runas=user)
+    return not __salt__["cmd.retcode"](f"{_which(user)} install '{name}'", runas=user)
 
 
 def remove(name, user=None):
@@ -93,10 +85,7 @@ def remove(name, user=None):
     user
         The username to remove the package for. Defaults to salt user.
     """
-
-    e = _which(user)
-
-    return not __salt__["cmd.retcode"]("{} uninstall '{}'".format(e, name), runas=user)
+    return not __salt__["cmd.retcode"](f"{_which(user)} uninstall '{name}'", runas=user)
 
 
 def remove_all(user=None):
@@ -112,10 +101,7 @@ def remove_all(user=None):
     user
         The username to remove all packages for. Defaults to salt user.
     """
-
-    e = _which(user)
-
-    return not __salt__["cmd.retcode"]("{} uninstall-all".format(e), runas=user)
+    return not __salt__["cmd.retcode"](f"{_which(user)} uninstall-all", runas=user)
 
 
 def upgrade(name, user=None):
@@ -134,10 +120,7 @@ def upgrade(name, user=None):
     user
         The username to upgrade the package for. Defaults to salt user.
     """
-
-    e = _which(user)
-
-    return not __salt__["cmd.retcode"]("{} upgrade '{}'".format(e, name), runas=user)
+    return not __salt__["cmd.retcode"](f"{_which(user)} upgrade '{name}'", runas=user)
 
 
 def reinstall(name, user=None):
@@ -156,10 +139,7 @@ def reinstall(name, user=None):
     user
         The username to reinstall the package for. Defaults to salt user.
     """
-
-    e = _which(user)
-
-    return not __salt__["cmd.retcode"]("{} reinstall '{}'".format(e, name), runas=user)
+    return not __salt__["cmd.retcode"](f"{_which(user)} reinstall '{name}'", runas=user)
 
 
 def upgrade_all(user=None):
@@ -175,13 +155,12 @@ def upgrade_all(user=None):
     user
         The username to upgrade all packages for. Defaults to salt user.
     """
-
-    e = _which(user)
-
-    return not __salt__["cmd.retcode"]("{} upgrade-all".format(e), runas=user)
+    return not __salt__["cmd.retcode"](f"{_which(user)} upgrade-all", runas=user)
 
 
-def is_outdated(name, user=None, endpoint="https://pypi.org/pypi/{}/json"):
+def is_outdated(
+    name, user=None, endpoint="https://pypi.org/pypi/{}/json", get_versions=False
+):
     """
     Checks whether a package installed with pipx can be upgraded.
 
@@ -206,13 +185,14 @@ def is_outdated(name, user=None, endpoint="https://pypi.org/pypi/{}/json"):
     current = current_all.get(name)
 
     if current is None:
-        raise CommandExecutionError(
-            "{} is not installed for user {}.".format(name, user)
-        )
+        raise CommandExecutionError(f"{name} is not installed for user {user}.")
 
     latest = _get_latest_version(name, endpoint)
 
-    return packaging.version.parse(current) < packaging.version.parse(latest)
+    res = packaging.version.parse(current) < packaging.version.parse(latest)
+    if get_versions:
+        return res, current, latest
+    return res
 
 
 def _get_latest_version(name, endpoint="https://pypi.org/pypi/{}/json"):
@@ -227,17 +207,16 @@ def _get_latest_version(name, endpoint="https://pypi.org/pypi/{}/json"):
 
 
 def _list_installed(user=None, versions=False):
-    e = _which(user)
     try:
         out = json.loads(
             __salt__["cmd.run_stdout"](
-                "{} list --json".format(e), runas=user, raise_err=True
+                f"{_which(user)} list --json", runas=user, raise_err=True
             )
         )
     except json.JSONDecodeError as e:
         raise CommandExecutionError(str(e))
 
-    tools = list(out["venvs"].keys())
+    tools = list(out["venvs"])
 
     if versions:
         versions = []

@@ -1,14 +1,17 @@
-# -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{%- set tplroot = tpldir.split('/')[0] %}
+{#-
+    Removes pipx completions for all managed users.
+#}
+
+{%- set tplroot = tpldir.split("/")[0] %}
 {%- from tplroot ~ "/map.jinja" import mapdata as pipx with context %}
 
 include:
   - {{ tplroot }}.package
 
 
-{%- for user in pipx.users | selectattr('rchook', 'defined') | selectattr('rchook') %}
+{%- for user in pipx.users | selectattr("rchook", "defined") | selectattr("rchook") %}
 
 Pipx completions are loaded on shell startup for user '{{ user.name }}':
   file.replace:

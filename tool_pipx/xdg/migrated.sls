@@ -1,14 +1,13 @@
-# -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{%- set tplroot = tpldir.split('/')[0] %}
+{%- set tplroot = tpldir.split("/")[0] %}
 {%- from tplroot ~ "/map.jinja" import mapdata as pipx with context %}
 
 include:
   - {{ tplroot }}.package
 
 
-{%- for user in pipx.users | rejectattr('xdg', 'sameas', false) %}
+{%- for user in pipx.users | rejectattr("xdg", "sameas", false) %}
 
 {%-   set user_default_data = user.home | path_join(pipx.lookup.paths.confdir) %}
 {%-   set user_xdg_datadir = user.xdg.data | path_join(pipx.lookup.paths.xdg_dirname) %}
@@ -56,7 +55,7 @@ Pipx uses XDG dirs during this salt run:
     - require_in:
       - Pipx setup is completed
 
-{%-   if user.get('persistenv') %}
+{%-   if user.get("persistenv") %}
 
 persistenv file for Pipx exists for user '{{ user.name }}':
   file.managed:

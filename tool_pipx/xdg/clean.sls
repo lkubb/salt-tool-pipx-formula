@@ -1,11 +1,14 @@
-# -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{%- set tplroot = tpldir.split('/')[0] %}
+{#-
+    Removes Pipx XDG compatibility crutches for all managed users.
+#}
+
+{%- set tplroot = tpldir.split("/")[0] %}
 {%- from tplroot ~ "/map.jinja" import mapdata as pipx with context %}
 
 
-{%- for user in pipx.users | rejectattr('xdg', 'sameas', false) %}
+{%- for user in pipx.users | rejectattr("xdg", "sameas", false) %}
 
 {%-   set user_default_conf = user.home | path_join(pipx.lookup.paths.confdir) %}
 {%-   set user_xdg_confdir = user.xdg.config | path_join(pipx.lookup.paths.xdg_dirname) %}
@@ -28,7 +31,7 @@ Pipx does not use XDG dirs during this salt run:
         PIPX_HOME: false
     - false_unsets: true
 
-{%-   if user.get('persistenv') %}
+{%-   if user.get("persistenv") %}
 
 Pipx is ignorant about XDG location for user '{{ user.name }}':
   file.replace:

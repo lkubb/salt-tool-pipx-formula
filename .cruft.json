@@ -1,6 +1,6 @@
 {
   "template": "https://github.com/lkubb/salt-tool-template-formula",
-  "commit": "e9d3e0471ce648595d77be7744fdfe1ea3a6b036",
+  "commit": "2a2c58080298a755908e73eece940b8054720627",
   "checkout": null,
   "context": {
     "cookiecutter": {

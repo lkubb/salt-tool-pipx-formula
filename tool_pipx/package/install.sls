@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{%- set tplroot = tpldir.split('/')[0] %}
+{%- set tplroot = tpldir.split("/")[0] %}
 {%- from tplroot ~ "/map.jinja" import mapdata as pipx with context %}
 {%- set install_method = pipx.get("install_method", "pkg") %}
 {#- do not specify alternative return value to be able to unset default version #}

@@ -8,14 +8,14 @@
 -#}
 
 
-{%- set tplroot = tpldir.split('/')[0] %}
+{%- set tplroot = tpldir.split("/")[0] %}
 {%- from tplroot ~ "/map.jinja" import mapdata as pipx with context %}
 
 include:
   - {{ tplroot }}.package
 
 
-{%- for user in pipx.users | selectattr('rchook', 'defined') | selectattr('rchook') %}
+{%- for user in pipx.users | selectattr("rchook", "defined") | selectattr("rchook") %}
 
 rchook file for Pipx exists for user '{{ user.name }}':
   file.managed:
@@ -34,7 +34,7 @@ Pipx completions are loaded on shell startup for user '{{ user.name }}':
     - require:
       - rchook file for Pipx exists for user '{{ user.name }}'
 
-{%-   if "zsh" == user.shell %}
+{%-   if user.shell == "zsh" %}
 
 Info about Pipx completions:
   test.show_notification:

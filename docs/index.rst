@@ -1,5 +1,5 @@
-Welcome to salt-tool-pipx-formula's documentation!
-==================================================
+Welcome to tool-pipx-formula's documentation!
+=============================================
 
 .. toctree::
    :maxdepth: 2

@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "salt_tool_pipx"
+name = "tool_pipx_formula"
 version = "1.0.0"
 description = "Saltstack execution/state modules and states to manage Pipx"
 authors = ["lkubb"]

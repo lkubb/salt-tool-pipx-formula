@@ -7,7 +7,7 @@
 {%- for user in pipx.users | selectattr("pipx.packages", "defined") %}
 {%-   for package in user.pipx.packages %}
 
-Pipx package '{{ package }}' is installed for user '{{ user.name }}':
+Pipx package '{{ package }}' is removed for user '{{ user.name }}':
   pipx.absent:
     - name: {{ package }}
     - user: {{ user.name }}
